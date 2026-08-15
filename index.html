@@ -180,6 +180,37 @@
             background: rgba(255,255,255,0.3);
         }
 
+        /* 手機版響應式設計 (RWD) */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            .header h1 {
+                font-size: 1.2rem;
+            }
+            .main-container {
+                flex-direction: column;
+                overflow-y: auto; /* 允許手機上下滑動 */
+                padding: 1rem;
+            }
+            .preview-area {
+                order: -1; /* 讓預覽圖跑到最上面 */
+                min-height: 40vh;
+                border: none;
+                background: transparent;
+            }
+            #canvas {
+                max-height: 45vh; /* 縮小畫布最高高度，留空間給下面的表單 */
+            }
+            .sidebar {
+                width: 100%; /* 表單撐滿寬度 */
+                box-sizing: border-box;
+                box-shadow: none;
+            }
+        }
+
     </style>
 </head>
 <body onload="loadDefaultTemplate()">
