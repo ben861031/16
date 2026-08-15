@@ -7,23 +7,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --bg-color: #0f172a;
-            --panel-bg: rgba(30, 41, 59, 0.7);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.1);
+            /* 國泰人壽企業識別色 */
+            --primary: #00a850; 
+            --primary-hover: #008f44;
+            --bg-color: #f4f6f9; /* 明亮的淺灰背景 */
+            --panel-bg: #ffffff; /* 純白面板 */
+            --text-main: #333333; /* 深灰文字，易於閱讀 */
+            --text-muted: #737373;
+            --border-color: #e0e0e0;
         }
 
         body {
             font-family: 'Noto Sans TC', sans-serif;
             background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,0.3) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.3) 0, transparent 50%);
-            background-attachment: fixed;
+            background-image: none; /* 移除暗色漸層 */
             color: var(--text-main);
             margin: 0;
             min-height: 100vh;
@@ -32,10 +29,10 @@
         }
 
         .header {
-            padding: 1.5rem 2rem;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            background: #ffffff;
+            border-bottom: 3px solid var(--primary); /* 國泰綠色飾條 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -45,9 +42,7 @@
             margin: 0;
             font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(to right, #818cf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary);
         }
 
         .main-container {
@@ -61,22 +56,21 @@
         .sidebar {
             width: 350px;
             background: var(--panel-bg);
-            backdrop-filter: blur(16px);
             border: 1px solid var(--border-color);
-            border-radius: 1rem;
+            border-radius: 0.5rem; /* 較為方正的圓角 */
             padding: 1.5rem;
             display: flex;
             flex-direction: column;
             gap: 1.25rem;
             overflow-y: auto;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* 輕微柔和的陰影 */
         }
 
         .preview-area {
             flex: 1;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px dashed var(--border-color);
-            border-radius: 1rem;
+            background: #ffffff; /* 白色預覽區 */
+            border: 2px dashed #cccccc;
+            border-radius: 0.5rem;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -97,11 +91,11 @@
         }
 
         .form-control {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--border-color);
+            background: #ffffff;
+            border: 1px solid #cccccc;
             color: var(--text-main);
             padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
+            border-radius: 0.25rem;
             font-family: inherit;
             font-size: 1rem;
             transition: all 0.2s;
@@ -110,7 +104,7 @@
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 0 2px rgba(0, 168, 80, 0.2);
         }
 
         .btn {
@@ -139,11 +133,13 @@
         }
         
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
+            background: #f4f6f9;
+            color: #555555;
+            border: 1px solid #cccccc;
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: #e9ecef;
         }
 
         #canvas {
@@ -157,11 +153,11 @@
         .section-title {
             font-size: 1.1rem;
             font-weight: 700;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid #eeeeee;
             padding-bottom: 0.5rem;
             margin-top: 1rem;
             margin-bottom: 0.5rem;
-            color: #e2e8f0;
+            color: var(--primary); /* 標題使用品牌綠色 */
         }
 
         /* Customize Scrollbar */
@@ -170,14 +166,14 @@
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.1);
+            background: #f1f1f1;
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
+            background: #cccccc;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255,255,255,0.3);
+            background: #aaaaaa;
         }
 
         /* 手機版響應式設計 (RWD) */
