@@ -321,8 +321,8 @@
             drawGoldText(document.getElementById('deptText').value, centerX, 830, 60, '700');
 
             // --- 繪製「數量/件數」 ---
-            // 稍微往下移
-            drawQuantity(document.getElementById('qtyText').value, centerX, 990, 190);
+            // 調整字體大小與位置，留出車頂上方舒適的留白空間
+            drawQuantity(document.getElementById('qtyText').value, centerX, 965, 145);
         }
 
         function drawQuantity(text, x, y, size) {
@@ -334,9 +334,9 @@
                 ctx.font = `900 ${size}px 'Noto Sans TC', sans-serif`;
                 const textWidth = ctx.measureText(innerText).width;
                 
-                const starOffset = (textWidth / 2) + 60;
-                drawGoldText('✦', x - starOffset, y - 20, size * 0.45, '400');
-                drawGoldText('✦', x + starOffset, y - 20, size * 0.45, '400');
+                const starOffset = (textWidth / 2) + (size * 0.35);
+                drawGoldText('✦', x - starOffset, y - (size * 0.1), size * 0.45, '400');
+                drawGoldText('✦', x + starOffset, y - (size * 0.1), size * 0.45, '400');
             } else {
                 drawGoldText(text, x, y, size, '900');
             }
