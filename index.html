@@ -311,8 +311,10 @@
             const centerX = canvas.width / 2;
 
             // --- 繪製「姓名」 ---
-            // 稍微往上移一點
-            drawGoldText(document.getElementById('nameText').value, centerX, 670, 150, '700');
+            // 自動在每個字元之間加入半形空格
+            let rawName = document.getElementById('nameText').value;
+            let formattedName = rawName.replace(/\s+/g, '').split('').join(' ');
+            drawGoldText(formattedName, centerX, 670, 150, '700');
 
             // --- 繪製「單位/部門」 ---
             // 往下移，拉開與姓名的距離
