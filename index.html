@@ -304,8 +304,8 @@
                 </div>
 
                 <div class="form-group" style="margin-top: 0.75rem;">
-                    <label>專案換算P數</label>
-                    <input type="text" id="hebao2P2" class="form-control" value="3.2 P" placeholder="例如: 3.2 P">
+                    <label>專案換算P數（未填寫時將自動隱藏）</label>
+                    <input type="text" id="hebao2P2" class="form-control" value="3.2 P" placeholder="留空時自動隱藏「績優出國」並居中保單名稱">
                 </div>
             </div>
 
@@ -562,16 +562,22 @@
             const line3Str = `${nameVal}  ${roleVal}`;
             drawOutlineText(line3Str, centerX, 710, 120, '#FF55CC', '#000000', 18, 14, 5);
 
-            // Line 4: 保單名稱 + P數 (預設: 輕漾心安 1.6 P)
+            // 檢查「專案換算P數 (hebao2P2)」是否有填寫
+            const p2Val = document.getElementById('hebao2P2').value.trim();
             const policyVal = document.getElementById('hebao2Policy').value;
             const p1Val = document.getElementById('hebao2P1').value;
             const line4Str = `${policyVal}  ${p1Val}`;
-            drawOutlineText(line4Str, centerX, 980, 125, '#FFE500', '#000000', 20, 16, 5);
 
-            // Line 5: 績優出國 + P數 (預設: 績優出國 3.2 P)
-            const p2Val = document.getElementById('hebao2P2').value;
-            const line5Str = `績優出國  ${p2Val}`;
-            drawOutlineText(line5Str, centerX, 1180, 125, '#FFE500', '#000000', 20, 16, 5);
+            if (p2Val !== '') {
+                // 1. 有填寫專案P數：顯示雙行 (Line 4 於 Y=980，Line 5 於 Y=1180)
+                drawOutlineText(line4Str, centerX, 980, 125, '#FFE500', '#000000', 20, 16, 5);
+
+                const line5Str = `績優出國  ${p2Val}`;
+                drawOutlineText(line5Str, centerX, 1180, 125, '#FFE500', '#000000', 20, 16, 5);
+            } else {
+                // 2. 未填寫專案P數：隱藏「績優出國」，Line 4 保單名稱往下平移居中至 Y=1070 最佳黃金視覺位置
+                drawOutlineText(line4Str, centerX, 1070, 130, '#FFE500', '#000000', 22, 16, 5);
+            }
 
             // Line 6: 標語 (績優出國有你有我)
             drawSloganLine(centerX, 1385, 115);
