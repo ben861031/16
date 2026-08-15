@@ -422,71 +422,83 @@
         }
 
         function drawHebao(centerX) {
-            // Line 1: 礁  溪  最  狂 (固定標題)
-            drawHebaoTitleLine('礁  溪  最  狂', centerX, 195, 160);
+            // Line 1: 礁  溪  最  狂 (縮放字體至 150px，確保兩側有 >150px 安全留白，不爆邊)
+            drawHebaoTitleSpread(centerX, 175, 150);
 
-            // Line 2: 盛 峰 推 展 處 (固定單位)
-            drawOutlineText('盛峰推展處', centerX, 475, 135, '#FFFFFF', '#000000', 18);
+            // Line 2: 盛 峰 推 展 處 (字體 130px，Y=435，黑色描邊 18px，安全邊距 >170px)
+            drawOutlineText('盛峰推展處', centerX, 435, 130, '#FFFFFF', '#000000', 18, 14, 5);
 
-            // Line 3: 職稱 (可變動)
+            // Line 3: 職稱 (字體 100px，Y=635，鮮豔桃粉色)
             const titleVal = document.getElementById('titleText').value;
-            drawOutlineText(titleVal, centerX, 665, 105, '#FF66CC', '#000000', 14);
+            drawOutlineText(titleVal, centerX, 635, 100, '#FF55CC', '#000000', 14, 12, 4);
 
-            // Line 4: 姓名 (可變動)
+            // Line 4: 姓名 (字體 120px，Y=770，鮮豔桃粉色)
             const nameVal = document.getElementById('nameTextHebao').value;
-            drawOutlineText(nameVal, centerX, 800, 125, '#FF66CC', '#000000', 16);
+            drawOutlineText(nameVal, centerX, 770, 120, '#FF55CC', '#000000', 16, 14, 5);
 
-            // Line 5: 保單名稱 + 業績換算 (可變動)
+            // Line 5: 保單名稱 + 業績換算 (字體 125px，Y=1000，安全邊距 >135px)
             const policyVal = document.getElementById('policyText').value;
             const pVal = document.getElementById('pText').value;
             const line5Str = `${policyVal}   ${pVal}`;
-            drawOutlineText(line5Str, centerX, 1025, 135, '#FFEA00', '#000000', 18);
+            drawOutlineText(line5Str, centerX, 1000, 125, '#FFE500', '#000000', 18, 16, 5);
 
-            // Line 6: 績優出國換算 13P (常設固定)
-            drawOutlineText('績優出國換算 13P', centerX, 1210, 110, '#FFD700', '#000000', 16);
+            // Line 6: 績優出國換算 13P (字體 105px，Y=1195，安全邊距 >75px)
+            drawOutlineText('績優出國換算 13P', centerX, 1195, 105, '#FFC000', '#000000', 16, 14, 5);
 
-            // Line 7: 績優出國有你有我 (常設固定)
-            drawSloganLine(centerX, 1395, 115);
+            // Line 7: 績優出國 (藍色) + 有你有我 (紅色) 雙層白/黑邊框 (字體 110px，Y=1380，安全邊距 >60px)
+            drawSloganLine(centerX, 1380, 110);
         }
 
-        function drawHebaoTitleLine(text, x, y, size) {
+        function drawHebaoTitleSpread(centerX, y, size) {
             ctx.font = `900 ${size}px 'Noto Sans TC', sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
-            ctx.shadowBlur = 10;
-            ctx.shadowOffsetY = 5;
+            const chars = ['礁', '溪', '最', '狂'];
+            const xs = [centerX - 275, centerX - 92, centerX + 92, centerX + 275];
 
-            // 厚重白色邊框
-            ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 18;
-            ctx.lineJoin = 'round';
-            ctx.strokeText(text, x, y);
+            for (let i = 0; i < chars.length; i++) {
+                const char = chars[i];
+                const x = xs[i];
 
-            // 紅色文字本體
-            ctx.shadowColor = 'transparent';
-            ctx.fillStyle = '#EE0000';
-            ctx.fillText(text, x, y);
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetY = 5;
+
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.lineWidth = 18;
+                ctx.lineJoin = 'round';
+                ctx.strokeText(char, x, y);
+
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = '#EE0000';
+                ctx.fillText(char, x, y);
+            }
         }
 
-        function drawOutlineText(text, x, y, size, fillStyle, strokeStyle, strokeWidth) {
+        function drawOutlineText(text, x, y, size, fillStyle, strokeStyle, strokeWidth, shadowBlur, shadowY) {
             ctx.font = `900 ${size}px 'Noto Sans TC', sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-            ctx.shadowBlur = 8;
-            ctx.shadowOffsetY = 4;
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+            ctx.shadowBlur = shadowBlur || 14;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = shadowY || 5;
 
-            ctx.strokeStyle = strokeStyle;
-            ctx.lineWidth = strokeWidth;
+            ctx.strokeStyle = strokeStyle || '#000000';
+            ctx.lineWidth = strokeWidth || 18;
             ctx.lineJoin = 'round';
             ctx.strokeText(text, x, y);
 
             ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
             ctx.fillStyle = fillStyle;
             ctx.fillText(text, x, y);
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+            ctx.fillText(text, x, y - 2);
         }
 
         function drawSloganLine(centerX, y, size) {
@@ -500,39 +512,42 @@
             const totalW = w1 + w2;
             const startX = centerX - totalW / 2;
 
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
-            ctx.shadowBlur = 10;
+            ctx.textAlign = 'left';
+
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+            ctx.shadowBlur = 15;
+            ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 5;
 
-            // 第一部分: 績優出國 (藍色)
-            ctx.textAlign = 'left';
             ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 14;
+            ctx.lineWidth = 18;
             ctx.lineJoin = 'round';
             ctx.strokeText(part1, startX, y);
 
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
             ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 6;
+            ctx.lineWidth = 8;
             ctx.strokeText(part1, startX, y);
 
-            ctx.shadowColor = 'transparent';
-            ctx.fillStyle = '#0066FF';
+            ctx.fillStyle = '#0033FF';
             ctx.fillText(part1, startX, y);
 
-            // 第二部分: 有你有我 (紅色)
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
-            ctx.shadowBlur = 10;
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+            ctx.shadowBlur = 15;
+            ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 5;
 
             ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 14;
-            ctx.strokeText(part2, startX + w1, y);
-
-            ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 6;
+            ctx.lineWidth = 18;
             ctx.strokeText(part2, startX + w1, y);
 
             ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 8;
+            ctx.strokeText(part2, startX + w1, y);
+
             ctx.fillStyle = '#EE0000';
             ctx.fillText(part2, startX + w1, y);
         }
