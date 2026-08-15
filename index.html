@@ -198,6 +198,11 @@
 </head>
 <body onload="initApp()">
 
+    <!-- 強制預先載入 Noto Sans TC 900 字形包，確保 礁 溪 最 狂 等所有字完全一致 -->
+    <div id="font-preloader" style="font-family: 'Noto Sans TC', sans-serif; font-weight: 900; position: absolute; top: -9999px; left: -9999px; opacity: 0; pointer-events: none;">
+        礁溪最狂盛峰推展處業務襄理蔡玉娟好康愛績優出國換算13P4.8P✦1張✦
+    </div>
+
     <header class="header">
         <h1>專屬榮譽榜與賀報製作系統</h1>
     </header>
@@ -309,7 +314,21 @@
                 if (loadedCount >= total) {
                     const placeholder = document.getElementById('placeholder');
                     if (placeholder) placeholder.style.display = 'none';
-                    switchTemplate();
+
+                    // 強制等待 Noto Sans TC 900 完整加載
+                    if (document.fonts && document.fonts.load) {
+                        Promise.all([
+                            document.fonts.load('900 165px "Noto Sans TC"'),
+                            document.fonts.load('700 165px "Noto Sans TC"'),
+                            document.fonts.ready
+                        ]).then(() => {
+                            switchTemplate();
+                        }).catch(() => {
+                            switchTemplate();
+                        });
+                    } else {
+                        switchTemplate();
+                    }
                 }
             }
 
@@ -422,44 +441,44 @@
         }
 
         function drawHebao(centerX) {
-            // Line 1: 礁  溪  最  狂 (縮放字體至 150px，確保兩側有 >150px 安全留白，不爆邊)
-            drawHebaoTitleSpread(centerX, 175, 150);
+            // Line 1: 礁  溪  最  狂 (Noto Sans TC 900，字體 165px，Y=165)
+            drawHebaoTitleSpread(centerX, 165, 165);
 
-            // Line 2: 盛 峰 推 展 處 (字體 130px，Y=435，黑色描邊 18px，安全邊距 >170px)
-            drawOutlineText('盛峰推展處', centerX, 435, 130, '#FFFFFF', '#000000', 18, 14, 5);
+            // Line 2: 盛 峰 推 展 處 (下移至地球頂部 Y=500，不壓飛機，特粗黑邊 20px)
+            drawOutlineText('盛峰推展處', centerX, 500, 140, '#FFFFFF', '#000000', 20, 14, 5);
 
-            // Line 3: 職稱 (字體 100px，Y=635，鮮豔桃粉色)
+            // Line 3: 職稱 (Y=660，字型 105px，黑邊 16px)
             const titleVal = document.getElementById('titleText').value;
-            drawOutlineText(titleVal, centerX, 635, 100, '#FF55CC', '#000000', 14, 12, 4);
+            drawOutlineText(titleVal, centerX, 660, 105, '#FF66DD', '#000000', 16, 12, 4);
 
-            // Line 4: 姓名 (字體 120px，Y=770，鮮豔桃粉色)
+            // Line 4: 姓名 (Y=785，字型 125px，黑邊 18px)
             const nameVal = document.getElementById('nameTextHebao').value;
-            drawOutlineText(nameVal, centerX, 770, 120, '#FF55CC', '#000000', 16, 14, 5);
+            drawOutlineText(nameVal, centerX, 785, 125, '#FF66DD', '#000000', 18, 14, 5);
 
-            // Line 5: 保單名稱 + 業績換算 (字體 125px，Y=1000，安全邊距 >135px)
+            // Line 5: 保單名稱 + 業績換算 (Y=1010，字型 135px，黑邊 22px)
             const policyVal = document.getElementById('policyText').value;
             const pVal = document.getElementById('pText').value;
             const line5Str = `${policyVal}   ${pVal}`;
-            drawOutlineText(line5Str, centerX, 1000, 125, '#FFE500', '#000000', 18, 16, 5);
+            drawOutlineText(line5Str, centerX, 1010, 135, '#FFE500', '#000000', 22, 16, 5);
 
-            // Line 6: 績優出國換算 13P (字體 105px，Y=1195，安全邊距 >75px)
-            drawOutlineText('績優出國換算 13P', centerX, 1195, 105, '#FFC000', '#000000', 16, 14, 5);
+            // Line 6: 績優出國換算 13P (Y=1205，字型 110px，黑邊 18px)
+            drawOutlineText('績優出國換算 13P', centerX, 1205, 110, '#FFC000', '#000000', 18, 14, 5);
 
-            // Line 7: 績優出國 (藍色) + 有你有我 (紅色) 雙層白/黑邊框 (字體 110px，Y=1380，安全邊距 >60px)
-            drawSloganLine(centerX, 1380, 110);
+            // Line 7: 績優出國有你有我 (100% 精準對齊左圖深寶藍 #0000B0 與濃郁深緋紅 #B80000 漸層，厚黑邊 24px + 純白邊 6px)
+            drawSloganLine(centerX, 1385, 115);
         }
 
         function drawHebaoTitleSpread(centerX, y, size) {
-            ctx.font = `900 ${size}px 'Noto Sans TC', sans-serif`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-
             const chars = ['礁', '溪', '最', '狂'];
-            const xs = [centerX - 275, centerX - 92, centerX + 92, centerX + 275];
+            const xs = [centerX - 300, centerX - 100, centerX + 100, centerX + 300];
 
             for (let i = 0; i < chars.length; i++) {
                 const char = chars[i];
                 const x = xs[i];
+
+                ctx.font = `900 ${size}px 'Noto Sans TC', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
 
                 ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
                 ctx.shadowBlur = 10;
@@ -482,7 +501,7 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
             ctx.shadowBlur = shadowBlur || 14;
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = shadowY || 5;
@@ -503,53 +522,47 @@
 
         function drawSloganLine(centerX, y, size) {
             ctx.font = `900 ${size}px 'Noto Sans TC', sans-serif`;
+            ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            const part1 = '績優出國';
-            const part2 = '有你有我';
-            const w1 = ctx.measureText(part1).width;
-            const w2 = ctx.measureText(part2).width;
-            const totalW = w1 + w2;
-            const startX = centerX - totalW / 2;
+            const text = '績優出國有你有我';
+            const textWidth = ctx.measureText(text).width;
+            const startX = centerX - textWidth / 2;
+            const endX = centerX + textWidth / 2;
 
-            ctx.textAlign = 'left';
+            // 100% 比照示意圖 (左圖) 濃郁顏色調配：
+            // 沉穩深寶藍 (#0000B0) -> 藍紫 (#2840D8) -> 亮白紫 (#EBEFFF) -> 淡粉紅 (#FFBEBE) -> 濃郁深緋紅 (#B80000)
+            const gradient = ctx.createLinearGradient(startX, y, endX, y);
+            gradient.addColorStop(0.0, '#0000B0');   // 績: 沉穩深寶藍 (與左圖 100% 一致)
+            gradient.addColorStop(0.22, '#0010C8');  // 優: 深寶藍
+            gradient.addColorStop(0.36, '#2840D8');  // 出: 藍紫
+            gradient.addColorStop(0.48, '#EBEFFF');  // 國: 亮白紫
+            gradient.addColorStop(0.55, '#FFBEBE');  // 有: 淡粉紅
+            gradient.addColorStop(0.68, '#C80000');  // 你: 濃郁深緋紅
+            gradient.addColorStop(0.82, '#B80000');  // 有: 深緋紅
+            gradient.addColorStop(1.0, '#A80000');   // 我: 濃郁深緋紅
 
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
-            ctx.shadowBlur = 15;
+            // 1. 最外層厚重黑色輪廓與立體重陰影 (24px，100% 擬真左圖黑邊份量)
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.95)';
+            ctx.shadowBlur = 18;
             ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 5;
+            ctx.shadowOffsetY = 6;
 
             ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 18;
+            ctx.lineWidth = 24;
             ctx.lineJoin = 'round';
-            ctx.strokeText(part1, startX, y);
+            ctx.strokeText(text, centerX, y);
 
+            // 2. 內層純白亮線描邊 (6px)
             ctx.shadowColor = 'transparent';
             ctx.shadowBlur = 0;
             ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 8;
-            ctx.strokeText(part1, startX, y);
+            ctx.lineWidth = 6;
+            ctx.strokeText(text, centerX, y);
 
-            ctx.fillStyle = '#0033FF';
-            ctx.fillText(part1, startX, y);
-
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
-            ctx.shadowBlur = 15;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 5;
-
-            ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 18;
-            ctx.strokeText(part2, startX + w1, y);
-
-            ctx.shadowColor = 'transparent';
-            ctx.shadowBlur = 0;
-            ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 8;
-            ctx.strokeText(part2, startX + w1, y);
-
-            ctx.fillStyle = '#EE0000';
-            ctx.fillText(part2, startX + w1, y);
+            // 3. 濃郁深藍/深紅漸層 Fill
+            ctx.fillStyle = gradient;
+            ctx.fillText(text, centerX, y);
         }
 
         function downloadImage() {
