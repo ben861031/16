@@ -393,20 +393,17 @@
             const dataURL = canvas.toDataURL('image/png');
             const link = document.createElement('a');
             
-            // Generate filename based on template
+            // Generate filename based on Option A
+            const rawName = document.getElementById('nameText').value;
+            const name = rawName.replace(/\s+/g, ''); // 檔名中去除空白比較保險
+            
             const now = new Date();
             const year = now.getFullYear();
-            const month = now.getMonth() + 1;
-            const date = now.getDate();
-            let hours = now.getHours();
-            const ampm = hours >= 12 ? '下午' : '上午';
-            hours = hours % 12;
-            hours = hours ? hours : 12; 
-            const hoursStr = hours < 10 ? '0' + hours : hours;
-            const minutes = now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes();
-            const seconds = now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const date = String(now.getDate()).padStart(2, '0');
+            const dateStr = `${year}${month}${date}`;
             
-            const filename = `ChatGPT Image ${year}年${month}月${date}日 ${ampm}${hoursStr}_${minutes}_${seconds}.png`;
+            const filename = `${name}_車預單榮譽榜_${dateStr}.png`;
             
             link.download = filename;
             link.href = dataURL;
